@@ -112,7 +112,7 @@ function getAccel(){
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
-                sample.playbackRate.value = window.innerWidth/((px)+1);
+                sample.playbackRate.value = window.innerWidth/(2*(px)+1);
                 // sample.detune.value = px *500;
                 
             });
