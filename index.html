@@ -93,8 +93,8 @@ function getAccel(){
                 
                 // Update velocity according to how tilted the phone is
                 // Since phones are narrower than they are long, double the increase to the x velocity
-                vx = vx + leftToRight_degrees * updateRate*2; 
-                vy = vy + frontToBack_degrees * updateRate;
+                vx = vx + leftToRight_degrees * updateRate/2; 
+                vy = vy + frontToBack_degrees * updateRate/2;
                 
                 // Update position and clip it to bounds
                 px = px + vx*.5;
