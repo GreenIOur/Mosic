@@ -38,7 +38,7 @@ var px = 50; // Position x and y
 var py = 50;
 var vx = 0.0; // Velocity x and y
 var vy = 0.0;
-
+var position = {};
 var  record = [];
 
 var updateRate = 1/60; // Sensor refresh rate
@@ -92,7 +92,6 @@ function getAccel(){
 
     DeviceMotionEvent.requestPermission().then(response => {
         if (response == 'granted') {
-          var position = {};
        // Add a listener to get smartphone orientation 
            // in the alpha-beta-gamma axes (units in degrees)
            window.addEventListener('devicemotion', function(event) {
