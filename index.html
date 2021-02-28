@@ -110,7 +110,7 @@ function getAccel(){
                 position.beta = frontToBack_degrees;  
                 position.gamma = leftToRight_degrees;
 
-                record.push(position);
+                
                 // Update velocity according to how tilted the phone is
                 // Since phones are narrower than they are long, double the increase to the x velocity
                 vx = vx + position.gamma * updateRate/20; 
@@ -132,6 +132,7 @@ function getAccel(){
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
+                record.push(position);
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = px *500;
                 
