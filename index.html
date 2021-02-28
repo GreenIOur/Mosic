@@ -93,6 +93,11 @@ function getAccel(){
         if (response == 'granted') {
        // Add a listener to get smartphone orientation 
            // in the alpha-beta-gamma axes (units in degrees)
+           window.addEventListener('devicemotion', function(event) {
+            position.x = event.acceleration.x;
+            position.y = event.acceleration.x;
+            position.z = event.acceleration.x;
+          });
             window.addEventListener('deviceorientation',(event) => {
                 // Expose each orientation angle in a more readable way
                 
