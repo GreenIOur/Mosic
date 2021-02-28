@@ -40,7 +40,7 @@ var vx = 0.0; // Velocity x and y
 var vy = 0.0;
 
 var  record = [];
-
+var position = {};
 var updateRate = 1/60; // Sensor refresh rate
     let faked = true;
 if (!window.AudioContext && window.webkitAudioContext) {
@@ -89,7 +89,7 @@ function stop() {
 }
 
 function getAccel(){
-  var position = {};
+  
     DeviceMotionEvent.requestPermission().then(response => {
         if (response == 'granted') {
        // Add a listener to get smartphone orientation 
@@ -130,7 +130,7 @@ function getAccel(){
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
-                sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
+                // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = px *500;
                 
             });
