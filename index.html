@@ -84,8 +84,8 @@ fetch('soundpitch.wav')
 
 function stop() {
   sample.stop();
-  // var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
-  // $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
+  var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+  $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
 }
 
 function getAccel(){
