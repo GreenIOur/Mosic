@@ -38,6 +38,9 @@ var px = 50; // Position x and y
 var py = 50;
 var vx = 0.0; // Velocity x and y
 var vy = 0.0;
+
+var  position= {}, record = [];
+
 var updateRate = 1/60; // Sensor refresh rate
     let faked = true;
 if (!window.AudioContext && window.webkitAudioContext) {
@@ -95,7 +98,9 @@ function getAccel(){
                 rotation_degrees = event.alpha;
                 frontToBack_degrees = event.beta;
                 leftToRight_degrees = event.gamma;
-                
+                position.alpha = event.alpha;
+                position.beta = event.beta;  
+                position.gamma = event.gamma;
                 // Update velocity according to how tilted the phone is
                 // Since phones are narrower than they are long, double the increase to the x velocity
                 vx = vx + leftToRight_degrees * updateRate/20; 
@@ -113,7 +118,7 @@ function getAccel(){
                     py = Math.max(0, Math.min(98, py)) // Clip py between 0-98
                     vy = 0;
                 }
-                
+                record.push(position);
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
@@ -139,7 +144,7 @@ function download(content, fileName, contentType) {
 }
 
 function onDownload(){
- download(JSON.stringify(jsonData), "json-file-name.json", "text/plain");
+ download(JSON.stringify(record), "json-file-name.json", "text/plain");
 }
 
 
