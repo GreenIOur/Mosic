@@ -94,17 +94,20 @@ function getAccel(){
         if (response == 'granted') {
        // Add a listener to get smartphone orientation 
            // in the alpha-beta-gamma axes (units in degrees)
-           window.addEventListener('devicemotion', function(event) {
-            // position.x = event.acceleration.x;
-            // position.y = event.acceleration.y;
-            // position.z = event.acceleration.z;
-          });
-            window.addEventListener('deviceorientation',(event) => {
+          //  window.addEventListener('devicemotion', function(event) {
+          //   // position.x = event.acceleration.x;
+          //   // position.y = event.acceleration.y;
+          //   // position.z = event.acceleration.z;
+          // });
+            window.addEventListener('devicemotion',(event) => {
                 // Expose each orientation angle in a more readable way
                 var position = {};
-                rotation_degrees = event.alpha;
-                frontToBack_degrees = event.beta;
-                leftToRight_degrees = event.gamma;
+                position.x = event.acceleration.x;
+                position.y = event.acceleration.y;
+                position.z = event.acceleration.z;
+                rotation_degrees = event.rotationRate.alpha;
+                frontToBack_degrees = event.rotationRate.beta;
+                leftToRight_degrees = event.rotationRate.gamma;
 
                 position.alpha = rotation_degrees;
                 position.beta = frontToBack_degrees;  
