@@ -140,6 +140,7 @@ function download(content, fileName, contentType) {
 
 function onDownload(){
  download(JSON.stringify(record), "json-file-name.json", "text/plain");
+ record.clear();
 }
 
 
