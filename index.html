@@ -40,7 +40,7 @@ var vx = 0.0; // Velocity x and y
 var vy = 0.0;
 
 var  record = [];
-var position = {};
+
 var updateRate = 1/60; // Sensor refresh rate
     let faked = true;
 if (!window.AudioContext && window.webkitAudioContext) {
@@ -92,6 +92,7 @@ function getAccel(){
 
     DeviceMotionEvent.requestPermission().then(response => {
         if (response == 'granted') {
+          var position = {};
        // Add a listener to get smartphone orientation 
            // in the alpha-beta-gamma axes (units in degrees)
            window.addEventListener('devicemotion', function(event) {
@@ -101,7 +102,6 @@ function getAccel(){
           });
             window.addEventListener('deviceorientation',(event) => {
                 // Expose each orientation angle in a more readable way
-                
                 rotation_degrees = event.alpha;
                 frontToBack_degrees = event.beta;
                 leftToRight_degrees = event.gamma;
