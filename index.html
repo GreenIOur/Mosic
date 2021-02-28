@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"> 
+      </script> 
     <title>Accelerometer Demo</title>
 
     <style>
@@ -31,6 +33,7 @@
   }
 </style>
 <script>    
+  var obj = {gamma: 123, teta: "4"};
 var px = 50; // Position x and y
 var py = 50;
 var vx = 0.0; // Velocity x and y
@@ -78,6 +81,8 @@ fetch('soundpitch.wav')
 
 function stop() {
   sample.stop();
+  var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+  $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
 }
 
 function getAccel(){
@@ -135,7 +140,8 @@ function getAccel(){
 
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
-
+<div id="container"></div>
 </body>
+
 </html>
 
