@@ -38,7 +38,7 @@ var px = 50; // Position x and y
 var py = 50;
 var vx = 0.0; // Velocity x and y
 var vy = 0.0;
-var position = {};
+
 var  record = [];
 
 var updateRate = 1/60; // Sensor refresh rate
@@ -95,12 +95,13 @@ function getAccel(){
        // Add a listener to get smartphone orientation 
            // in the alpha-beta-gamma axes (units in degrees)
            window.addEventListener('devicemotion', function(event) {
-            position.x = event.acceleration.x;
-            position.y = event.acceleration.y;
-            position.z = event.acceleration.z;
+            // position.x = event.acceleration.x;
+            // position.y = event.acceleration.y;
+            // position.z = event.acceleration.z;
           });
             window.addEventListener('deviceorientation',(event) => {
                 // Expose each orientation angle in a more readable way
+                var position = {};
                 rotation_degrees = event.alpha;
                 frontToBack_degrees = event.beta;
                 leftToRight_degrees = event.gamma;
@@ -109,7 +110,7 @@ function getAccel(){
                 position.beta = frontToBack_degrees;  
                 position.gamma = leftToRight_degrees;
 
-                
+                record.push(position);
                 // Update velocity according to how tilted the phone is
                 // Since phones are narrower than they are long, double the increase to the x velocity
                 vx = vx + position.gamma * updateRate/20; 
@@ -131,7 +132,6 @@ function getAccel(){
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
-                record.push(position);
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = px *500;
                 
