@@ -39,8 +39,8 @@ var py = 50;
 var vx = 0.0; // Velocity x and y
 var vy = 0.0;
 
-var  record= [];
-
+var  record = [];
+var position = {};
 var updateRate = 1/60; // Sensor refresh rate
     let faked = true;
 if (!window.AudioContext && window.webkitAudioContext) {
@@ -84,8 +84,8 @@ fetch('soundpitch.wav')
 
 function stop() {
   sample.stop();
-  var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
-  $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
+  // var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+  // $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
 }
 
 function getAccel(){
@@ -95,7 +95,7 @@ function getAccel(){
            // in the alpha-beta-gamma axes (units in degrees)
             window.addEventListener('deviceorientation',(event) => {
                 // Expose each orientation angle in a more readable way
-                var position = {};
+                
                 rotation_degrees = event.alpha;
                 frontToBack_degrees = event.beta;
                 leftToRight_degrees = event.gamma;
@@ -141,7 +141,7 @@ function download(content, fileName, contentType) {
 
 function onDownload(){
  download(JSON.stringify(record), "json-file-name.json", "text/plain");
- record.clear();
+ // record.clear();
 }
 
 
