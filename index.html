@@ -164,6 +164,8 @@ function getAccel(){
                 sample.playbackRate.value = 1 + position.gamma/300;
                 if(position.x > 2){
                 	sample2.start();
+                }else{
+                	sample2.stop();
                 }
       
             });
