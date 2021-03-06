@@ -96,9 +96,9 @@ fetch('kickhardcore.wav')
       return audioContext.decodeAudioData(arrayBuffer);  
     }
   })
-  .then(audioBuffer => {
+  .then(audioBuffer2 => {
     sample2 = audioContext.createBufferSource();
-    sample2.buffer = audioBuffer;
+    sample2.buffer = audioBuffer2;
     // sample2.loop = true;
     sample2.connect(audioContext.destination);
     // sample2.start();
@@ -108,8 +108,8 @@ fetch('kickhardcore.wav')
 
 function stop() {
   sample.stop();
-  var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
-  $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
+  // var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+  // $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
 }
 
 function getAccel(){
