@@ -56,7 +56,6 @@ function play() {
     const buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
     sample = audioContext.createBufferSource();
     sample.buffer = buffer;
-    sample.loop = true;
     sample.connect(audioContext.destination);
     sample.start();
   }
@@ -138,7 +137,7 @@ function getAccel(){
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
-                sample.detune.value = position.x;
+                sample.detune.value = position.x * 1000;
                 // sample.playbackRate.value = 2;
                 
             });
