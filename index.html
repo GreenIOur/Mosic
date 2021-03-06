@@ -56,11 +56,12 @@ function play() {
     const buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
     sample = audioContext.createBufferSource();
     sample.buffer = buffer;
+    sample.loop = true;
     sample.connect(audioContext.destination);
     sample.start();
   }
   
-fetch('soundpitch.wav')
+fetch('kick_hardcore01.ogg')
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => {
     if (audioContext.decodeAudioData.length === 2) { // Safari
@@ -136,7 +137,8 @@ function getAccel(){
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
-                // sample.detune.value = px *500;
+                sample.detune.value = position.x;
+                // sample.playbackRate.value = 2;
                 
             });
         }
