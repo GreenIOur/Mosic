@@ -50,7 +50,7 @@ if (!window.AudioContext && window.webkitAudioContext) {
 const audioContext = new AudioContext();
 let sample;
 let sample2;
-
+let audiobuffer2;
 function play() {
   if (!faked) {
     faked = true;
@@ -97,10 +97,11 @@ fetch('kickhardcore.wav')
     }
   })
   .then(audioBuffer2 => {
-    sample2 = audioContext.createBufferSource();
-    sample2.buffer = audioBuffer2;
+  	audiobuffer2 = audioBuffer2;
+    // sample2 = audioContext.createBufferSource();
+    // sample2.buffer = audiobuffer2;
     // sample2.loop = true;
-    sample2.connect(audioContext.destination);
+    // sample2.connect(audioContext.destination);
     // sample2.start();
   })
   .catch(e => console.error('uff', e));
@@ -163,6 +164,10 @@ function getAccel(){
                 // sample.detune.value = position.x * 1000;
                 sample.playbackRate.value = 1 + position.gamma/300;
                 if(position.x > 1){
+                	sample2 = audioContext.createBufferSource();
+    				sample2.buffer = audiobuffer2;
+    // sample2.loop = true;
+    				sample2.connect(audioContext.destination);
                 	sample2.start();
                 }else{
                 	sample2.stop();
