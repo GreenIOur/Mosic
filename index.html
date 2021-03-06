@@ -49,6 +49,7 @@ if (!window.AudioContext && window.webkitAudioContext) {
 }
 const audioContext = new AudioContext();
 let sample;
+let samplerain;
 let sample2;
 let audiobuffer2;
 function play() {
@@ -80,6 +81,27 @@ fetch('kickhardcore.wav')
     sample.loop = true;
     sample.connect(audioContext.destination);
     sample.start();
+  })
+  .catch(e => console.error('uff', e));
+  fetch('rainstick2.wav')
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => {
+    if (audioContext.decodeAudioData.length === 2) { // Safari
+      return new Promise(resolve => {
+        audioContext.decodeAudioData(arrayBuffer, buffer => { 
+          resolve(buffer);
+        });
+      });
+    } else {
+      return audioContext.decodeAudioData(arrayBuffer);  
+    }
+  })
+  .then(audioBuffer => {
+    samplerain = audioContext.createBufferSource();
+    samplerain.buffer = audioBuffer;
+    samplerain.loop = true;
+    samplerain.connect(audioContext.destination);
+    samplerain.start();
   })
   .catch(e => console.error('uff', e));
 
@@ -163,6 +185,7 @@ function getAccel(){
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
                 sample.playbackRate.value = 1 + position.gamma/300;
+                samplerain.playbackRate.value = 1 + position.gamma/300;
                 if(position.x > 3 && playing_snare == false){
                 	sample2 = audioContext.createBufferSource();
     				sample2.buffer = audiobuffer2;
