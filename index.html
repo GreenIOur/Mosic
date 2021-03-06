@@ -163,7 +163,7 @@ function getAccel(){
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
                 sample.playbackRate.value = 1 + position.gamma/300;
-                if(position.x > 1 && playing_snare == false){
+                if(position.x > 3 && playing_snare == false){
                 	sample2 = audioContext.createBufferSource();
     				sample2.buffer = audiobuffer2;
     // sample2.loop = true;
