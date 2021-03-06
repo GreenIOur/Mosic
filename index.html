@@ -40,7 +40,7 @@ var vx = 0.0; // Velocity x and y
 var vy = 0.0;
 
 var  record = [];
-
+var playing_snare = false;
 var updateRate = 1/60; // Sensor refresh rate
     let faked = true;
 if (!window.AudioContext && window.webkitAudioContext) {
@@ -163,14 +163,16 @@ function getAccel(){
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
                 sample.playbackRate.value = 1 + position.gamma/300;
-                if(position.x > 1){
+                if(position.x > 1 && playing_snare == false){
                 	sample2 = audioContext.createBufferSource();
     				sample2.buffer = audiobuffer2;
     // sample2.loop = true;
     				sample2.connect(audioContext.destination);
                 	sample2.start();
+                	playing_snare = true;
                 }else{
                 	sample2.stop();
+                	playing_snare = false;
                 }
       
             });
