@@ -49,6 +49,7 @@ if (!window.AudioContext && window.webkitAudioContext) {
 }
 const audioContext = new AudioContext();
 let sample;
+let sample2;
 
 function play() {
   if (!faked) {
@@ -79,6 +80,28 @@ fetch('kickhardcore.wav')
     sample.loop = true;
     sample.connect(audioContext.destination);
     sample.start();
+  })
+  .catch(e => console.error('uff', e));
+
+  fetch('snare.wav')
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => {
+    if (audioContext.decodeAudioData.length === 2) { // Safari
+      return new Promise(resolve => {
+        audioContext.decodeAudioData(arrayBuffer, buffer => { 
+          resolve(buffer);
+        });
+      });
+    } else {
+      return audioContext.decodeAudioData(arrayBuffer);  
+    }
+  })
+  .then(audioBuffer => {
+    sample2 = audioContext.createBufferSource();
+    sample2.buffer = audioBuffer;
+    // sample2.loop = true;
+    sample2.connect(audioContext.destination);
+    // sample2.start();
   })
   .catch(e => console.error('uff', e));
 }
@@ -139,7 +162,10 @@ function getAccel(){
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
                 sample.playbackRate.value = 1 + position.gamma/300;
-                
+                if(position.x > 2){
+                	sample2.start();
+                }
+      
             });
         }
     });
