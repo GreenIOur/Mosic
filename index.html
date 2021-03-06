@@ -61,7 +61,7 @@ function play() {
     sample.start();
   }
   
-fetch('kick_hardcore01.ogg')
+fetch('kickhardcore.wav')
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => {
     if (audioContext.decodeAudioData.length === 2) { // Safari
