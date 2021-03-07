@@ -103,7 +103,7 @@ fetch('sitar.wav')
     samplesitar.buffer = audioBuffer;
     samplesitar.loop = true;
     samplesitar.connect(audioContext.destination);
-    // samplesitar.start();
+    samplesitar.start();
   })
   .catch(e => console.error('uff', e));
 
@@ -125,7 +125,7 @@ fetch('sitar.wav')
     samplerain.buffer = audioBuffer;
     samplerain.loop = true;
     samplerain.connect(audioContext.destination);
-    samplerain.start();
+    // samplerain.start();
   })
   .catch(e => console.error('uff', e));
 
@@ -208,9 +208,9 @@ function getAccel(){
                                               "top:" + (py) + "%;");
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
-                sample.playbackRate.value = 1 + position.gamma/300;
+                sample.playbackRate.value = 0.8 + position.gamma/300;
                 // samplerain.playbackRate.value = 1 + position.gamma/300;
-                samplesitar.playbackRate.value = 1 + position.gamma/800;
+                samplesitar.playbackRate.value = 0.6 + position.gamma/800;
                 if(position.x > 7 && playing_snare == false){
                 	sample2 = audioContext.createBufferSource();
     				sample2.buffer = audiobuffer2;
