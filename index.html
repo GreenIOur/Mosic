@@ -103,7 +103,7 @@ fetch('sitar.wav')
     samplesitar.buffer = audioBuffer;
     samplesitar.loop = true;
     samplesitar.connect(audioContext.destination);
-    samplesitar.start();
+    // samplesitar.start();
   })
   .catch(e => console.error('uff', e));
 
