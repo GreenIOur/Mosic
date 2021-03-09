@@ -87,16 +87,12 @@ function play() {
   }
 
   load([SAMPLE]).then(buffers => {
-    for (let note in notes) {    
-      for (let i = 0; i < notes[note].voices; i++) {
         const source = audioContext.createBufferSource();
         source.buffer = buffers.get(SAMPLE);
         source.loop = true;   
         source.connect(audioContext.destination);
         source.start();
         sources.push(source);
-      }
-    };
   });
   
 // fetch('kickhardcore.wav')
