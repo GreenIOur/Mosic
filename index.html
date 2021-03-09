@@ -96,7 +96,7 @@ function play() {
     sample.start();
   }
 
-  load([SAMPLO]).then(buffers => {
+  load(SAMPLO).then(buffers => {
   	for (var i = 0; i < SAMPLO.length; i++) {
     const source = audioContext.createBufferSource();
         source.buffer = buffers.get(SAMPLO[i]);
