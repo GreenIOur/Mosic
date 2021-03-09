@@ -98,10 +98,14 @@ function play() {
 
   load(SAMPLO).then(buffers => {
   	for (var i = 0; i < SAMPLO.length; i++) {
-    const source = audioContext.createBufferSource();
+  		const volume = audioContext.createGain();
+  		volume.gain.value = 1;
+  		volume.connect(audioContext.destination);
+  		volumes.push(volume);
+    	const source = audioContext.createBufferSource();
         source.buffer = buffers.get(SAMPLO[i]);
         source.loop = true;   
-        source.connect(audioContext.destination);
+        source.connect(volume);
         source.start();
         sources.push(source);
 }
@@ -253,6 +257,7 @@ function getAccel(){
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
                 sources[0].playbackRate.value = 0.98 + position.gamma/300;
+                volumes[1].gain.value = 0.5;
                 // samplerain.playbackRate.value = 1 + position.gamma/300;
                 // samplesitar.playbackRate.value = 0.6 + position.gamma/800;
                 if(position.x > 7 && playing_snare == false){
