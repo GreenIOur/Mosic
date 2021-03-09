@@ -49,7 +49,7 @@ if (!window.AudioContext && window.webkitAudioContext) {
 }
 const audioContext = new AudioContext();
 let sample;
-const SAMPLO = ['kickhardcore.wav','rainstick2.wav','snare.wav'];
+const SAMPLO = ['kickhardcore.wav','rainstick2.wav'];
 let samplerain;
 let samplesitar;
 let sample2;
@@ -252,7 +252,7 @@ function getAccel(){
                                               "top:" + (py) + "%;");
                 // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
                 // sample.detune.value = position.x * 1000;
-                sample.playbackRate.value = 0.98 + position.gamma/300;
+                sources[0].playbackRate.value = 0.98 + position.gamma/300;
                 // samplerain.playbackRate.value = 1 + position.gamma/300;
                 // samplesitar.playbackRate.value = 0.6 + position.gamma/800;
                 if(position.x > 7 && playing_snare == false){
