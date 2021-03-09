@@ -49,10 +49,33 @@ if (!window.AudioContext && window.webkitAudioContext) {
 }
 const audioContext = new AudioContext();
 let sample;
+const SAMPLE = ['kickhardcore.wav','rainstick2.wav'];
 let samplerain;
 let samplesitar;
 let sample2;
 let audiobuffer2;
+const sources = [];
+const volumes = [];
+
+function load(files) {
+  return new Promise((resolve, reject) => {
+    const buffers = new Map;
+    files.forEach(f => {
+      fetch(f)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+        .then(audioBuffer => {
+          buffers.set(f, audioBuffer);
+          if (buffers.size === files.length) {
+            resolve(buffers);
+          }
+        })
+        .catch(e => console.log('uff'));
+    });    
+  });
+}
+
+
 function play() {
   if (!faked) {
     faked = true;
@@ -62,95 +85,108 @@ function play() {
     sample.connect(audioContext.destination);
     sample.start();
   }
+
+  load([SAMPLE]).then(buffers => {
+    for (let note in notes) {    
+      for (let i = 0; i < notes[note].voices; i++) {
+        const source = audioContext.createBufferSource();
+        source.buffer = buffers.get(SAMPLE);
+        source.loop = true;   
+        source.connect(audioContext.destination);
+        source.start();
+        sources.push(source);
+      }
+    };
+  });
   
-fetch('kickhardcore.wav')
-  .then(response => response.arrayBuffer())
-  .then(arrayBuffer => {
-    if (audioContext.decodeAudioData.length === 2) { // Safari
-      return new Promise(resolve => {
-        audioContext.decodeAudioData(arrayBuffer, buffer => { 
-          resolve(buffer);
-        });
-      });
-    } else {
-      return audioContext.decodeAudioData(arrayBuffer);  
-    }
-  })
-  .then(audioBuffer => {
-    sample = audioContext.createBufferSource();
-    sample.buffer = audioBuffer;
-    sample.loop = true;
-    sample.connect(audioContext.destination);
-    sample.start();
-  })
-  .catch(e => console.error('uff', e));
+// fetch('kickhardcore.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer => {
+//     sample = audioContext.createBufferSource();
+//     sample.buffer = audioBuffer;
+//     sample.loop = true;
+//     sample.connect(audioContext.destination);
+//     sample.start();
+//   })
+//   .catch(e => console.error('uff', e));
 
-fetch('sitar.wav')
-  .then(response => response.arrayBuffer())
-  .then(arrayBuffer => {
-    if (audioContext.decodeAudioData.length === 2) { // Safari
-      return new Promise(resolve => {
-        audioContext.decodeAudioData(arrayBuffer, buffer => { 
-          resolve(buffer);
-        });
-      });
-    } else {
-      return audioContext.decodeAudioData(arrayBuffer);  
-    }
-  })
-  .then(audioBuffer => {
-    samplesitar = audioContext.createBufferSource();
-    samplesitar.buffer = audioBuffer;
-    samplesitar.loop = true;
-    samplesitar.connect(audioContext.destination);
-    // samplesitar.start();
-  })
-  .catch(e => console.error('uff', e));
+// fetch('sitar.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer => {
+//     samplesitar = audioContext.createBufferSource();
+//     samplesitar.buffer = audioBuffer;
+//     samplesitar.loop = true;
+//     samplesitar.connect(audioContext.destination);
+//     // samplesitar.start();
+//   })
+//   .catch(e => console.error('uff', e));
 
-  fetch('rainstick2.wav')
-  .then(response => response.arrayBuffer())
-  .then(arrayBuffer => {
-    if (audioContext.decodeAudioData.length === 2) { // Safari
-      return new Promise(resolve => {
-        audioContext.decodeAudioData(arrayBuffer, buffer => { 
-          resolve(buffer);
-        });
-      });
-    } else {
-      return audioContext.decodeAudioData(arrayBuffer);  
-    }
-  })
-  .then(audioBuffer => {
-    samplerain = audioContext.createBufferSource();
-    samplerain.buffer = audioBuffer;
-    samplerain.loop = true;
-    samplerain.connect(audioContext.destination);
-    // samplerain.start();
-  })
-  .catch(e => console.error('uff', e));
+//   fetch('rainstick2.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer => {
+//     samplerain = audioContext.createBufferSource();
+//     samplerain.buffer = audioBuffer;
+//     samplerain.loop = true;
+//     samplerain.connect(audioContext.destination);
+//     // samplerain.start();
+//   })
+//   .catch(e => console.error('uff', e));
 
-  fetch('snare.wav')
-  .then(response => response.arrayBuffer())
-  .then(arrayBuffer => {
-    if (audioContext.decodeAudioData.length === 2) { // Safari
-      return new Promise(resolve => {
-        audioContext.decodeAudioData(arrayBuffer, buffer => { 
-          resolve(buffer);
-        });
-      });
-    } else {
-      return audioContext.decodeAudioData(arrayBuffer);  
-    }
-  })
-  .then(audioBuffer2 => {
-  	audiobuffer2 = audioBuffer2;
-    // sample2 = audioContext.createBufferSource();
-    // sample2.buffer = audiobuffer2;
-    // sample2.loop = true;
-    // sample2.connect(audioContext.destination);
-    // sample2.start();
-  })
-  .catch(e => console.error('uff', e));
+//   fetch('snare.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer2 => {
+//   	audiobuffer2 = audioBuffer2;
+//     // sample2 = audioContext.createBufferSource();
+//     // sample2.buffer = audiobuffer2;
+//     // sample2.loop = true;
+//     // sample2.connect(audioContext.destination);
+//     // sample2.start();
+//   })
+//   .catch(e => console.error('uff', e));
 }
 
 function stop() {
