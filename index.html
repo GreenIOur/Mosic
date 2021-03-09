@@ -49,7 +49,7 @@ if (!window.AudioContext && window.webkitAudioContext) {
 }
 const audioContext = new AudioContext();
 let sample;
-const SAMPLO = 'kickhardcore.wav';
+const SAMPLO = ['kickhardcore.wav','rainstick2.wav'];
 let samplerain;
 let samplesitar;
 let sample2;
@@ -97,12 +97,14 @@ function play() {
   }
 
   load([SAMPLO]).then(buffers => {
-        const source = audioContext.createBufferSource();
-        source.buffer = buffers.get(SAMPLO);
+  	for (var i = 0; i < SAMPLO.length; i++) {
+    const source = audioContext.createBufferSource();
+        source.buffer = buffers.get(SAMPLO[i]);
         source.loop = true;   
         source.connect(audioContext.destination);
         source.start();
         sources.push(source);
+}
   });
   
 fetch('kickhardcore.wav')
