@@ -49,7 +49,7 @@ if (!window.AudioContext && window.webkitAudioContext) {
 }
 const audioContext = new AudioContext();
 let sample;
-const SAMPLE = 'kickhardcore.wav';
+const SAMPLO = 'kickhardcore.wav';
 let samplerain;
 let samplesitar;
 let sample2;
@@ -86,9 +86,9 @@ function play() {
     sample.start();
   }
 
-  load([SAMPLE]).then(buffers => {
+  load([SAMPLO]).then(buffers => {
         const source = audioContext.createBufferSource();
-        source.buffer = buffers.get(SAMPLE);
+        source.buffer = buffers.get(SAMPLO);
         source.loop = true;   
         source.connect(audioContext.destination);
         source.start();
