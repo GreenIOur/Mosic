@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"> 
+      </script> 
+    <title>Accelerometer Demo</title>
+
+    <style>
+    .indicatorDot{
+        width: 30px;
+        height: 30px;
+        background-color: #ffab56;
+        border-radius: 50%;
+        position:fixed;
+    }
+    </style>
+<style>
+    button {
+    color: white;
+    padding: 10px 20px;
+    font-size: large;
+    margin-bottom: 10px;
+    background: #96729E;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, .15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+  button:hover, [role="button"]:hover {
+    filter: brightness(1.2);
+    color: white;
+  }
+</style>
+<script>    
+  var obj = {gamma: 123, teta: "4"};
+var px = 50; // Position x and y
+var py = 50;
+var vx = 0.0; // Velocity x and y
+var vy = 0.0;
+
+var  record = [];
+var playing_snare = false;
+var updateRate = 1/60; // Sensor refresh rate
+    let faked = true;
+if (!window.AudioContext && window.webkitAudioContext) {
+  window.AudioContext = window.webkitAudioContext;
+  faked = false;
+}
+const audioContext = new AudioContext();
+let sample;
+const SAMPLO = ['kickhardcore.wav','rainstick2.wav'];
+let samplerain;
+let samplesitar;
+let sample2;
+let audiobuffer2;
+const sources = [];
+const volumes = [];
+
+function load(files) {
+  return new Promise((resolve, reject) => {
+    const buffers = new Map;
+    files.forEach(f => {
+      fetch(f)
+  		.then(response => response.arrayBuffer())
+  		.then(arrayBuffer => {
+    if (audioContext.decodeAudioData.length === 2) { // Safari
+      return new Promise(resolve => {
+        audioContext.decodeAudioData(arrayBuffer, buffer => { 
+          resolve(buffer);
+        });
+      });
+    } else {
+      return audioContext.decodeAudioData(arrayBuffer);  
+    }
+  })
+  .then(audioBuffer => {
+    buffers.set(f, audioBuffer);
+          if (buffers.size === files.length) {
+            resolve(buffers);
+          }
+  })
+  .catch(e => console.error('uff', e));
+    });    
+  });
+}
+
+
+function play() {
+  if (!faked) {
+    faked = true;
+    const buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
+    sample = audioContext.createBufferSource();
+    sample.buffer = buffer;
+    sample.connect(audioContext.destination);
+    sample.start();
+  }
+
+  load(SAMPLO).then(buffers => {
+  	for (var i = 0; i < SAMPLO.length; i++) {
+  		const volume = audioContext.createGain();
+  		volume.gain.value = 1;
+  		volume.connect(audioContext.destination);
+  		volumes.push(volume);
+    	const source = audioContext.createBufferSource();
+        source.buffer = buffers.get(SAMPLO[i]);
+        source.loop = true;   
+        source.connect(volume);
+        source.start();
+        sources.push(source);
+}
+  });
+  
+// fetch('kickhardcore.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer => {
+//     sample = audioContext.createBufferSource();
+//     sample.buffer = audioBuffer;
+//     sample.loop = true;
+//     sample.connect(audioContext.destination);
+//     sample.start();
+//   })
+//   .catch(e => console.error('uff', e));
+
+// fetch('sitar.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer => {
+//     samplesitar = audioContext.createBufferSource();
+//     samplesitar.buffer = audioBuffer;
+//     samplesitar.loop = true;
+//     samplesitar.connect(audioContext.destination);
+//     // samplesitar.start();
+//   })
+//   .catch(e => console.error('uff', e));
+
+//   fetch('rainstick2.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer => {
+//     samplerain = audioContext.createBufferSource();
+//     samplerain.buffer = audioBuffer;
+//     samplerain.loop = true;
+//     samplerain.connect(audioContext.destination);
+//     // samplerain.start();
+//   })
+//   .catch(e => console.error('uff', e));
+
+//   fetch('snare.wav')
+//   .then(response => response.arrayBuffer())
+//   .then(arrayBuffer => {
+//     if (audioContext.decodeAudioData.length === 2) { // Safari
+//       return new Promise(resolve => {
+//         audioContext.decodeAudioData(arrayBuffer, buffer => { 
+//           resolve(buffer);
+//         });
+//       });
+//     } else {
+//       return audioContext.decodeAudioData(arrayBuffer);  
+//     }
+//   })
+//   .then(audioBuffer2 => {
+//   	audiobuffer2 = audioBuffer2;
+//     // sample2 = audioContext.createBufferSource();
+//     // sample2.buffer = audiobuffer2;
+//     // sample2.loop = true;
+//     // sample2.connect(audioContext.destination);
+//     // sample2.start();
+//   })
+//   .catch(e => console.error('uff', e));
+}
+
+function stop() {
+  sample.stop();
+  // var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
+  // $('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#container');
+}
+
+function getAccel(){
+
+    DeviceMotionEvent.requestPermission().then(response => {
+        if (response == 'granted') {
+       // Add a listener to get smartphone orientation 
+           // in the alpha-beta-gamma axes (units in degrees)
+          //  window.addEventListener('devicemotion', function(event) {
+          //   // position.x = event.acceleration.x;
+          //   // position.y = event.acceleration.y;
+          //   // position.z = event.acceleration.z;
+          // });
+            window.addEventListener('devicemotion',(event) => {
+                // Expose each orientation angle in a more readable way
+                var position = {};
+                position.x = event.acceleration.x;
+                position.y = event.acceleration.y;
+                position.z = event.acceleration.z;
+                rotation_degrees = event.rotationRate.alpha;
+                frontToBack_degrees = event.rotationRate.beta;
+                leftToRight_degrees = event.rotationRate.gamma;
+
+                position.alpha = rotation_degrees;
+                position.beta = frontToBack_degrees;  
+                position.gamma = leftToRight_degrees;
+
+                record.push(position);
+                // Update velocity according to how tilted the phone is
+                // Since phones are narrower than they are long, double the increase to the x velocity
+                vx = vx + position.gamma * updateRate/20; 
+                vy = vy + position.beta * updateRate/20;
+                
+                // Update position and clip it to bounds
+                px = px + vx*.5;
+                if (px > 98 || px < 0){ 
+                    px = Math.max(0, Math.min(98, px)) // Clip px between 0-98
+                    vx = 0;
+                }
+
+                py = py + vy*.5;
+                if (py > 98 || py < 0){
+                    py = Math.max(0, Math.min(98, py)) // Clip py between 0-98
+                    vy = 0;
+                }
+                
+                dot = document.getElementsByClassName("indicatorDot")[0]
+                dot.setAttribute('style', "left:" + (px) + "%;" +
+                                              "top:" + (py) + "%;");
+                // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
+                // sample.detune.value = position.x * 1000;
+                // sources[0].playbackRate.value = 0.98 + position.gamma/300;
+                volumes[0].gain.value = Math.min(position.x/16, 1);
+                // volumes[1].gain.value = 0.5;
+                // samplerain.playbackRate.value = 1 + position.gamma/300;
+                // samplesitar.playbackRate.value = 0.6 + position.gamma/800;
+                if(position.x > 7 && playing_snare == false){
+                	sample2 = audioContext.createBufferSource();
+    				sample2.buffer = audiobuffer2;
+    // sample2.loop = true;
+    				sample2.connect(audioContext.destination);
+                	sample2.start();
+                	playing_snare = true;
+                	samplerain.playbackRate.value = 0;
+                }else{
+                	sample2.stop();
+                	playing_snare = false;
+                	samplerain.playbackRate.value = 0.5;
+                }
+      
+            });
+        }
+    });
+}
+
+function download(content, fileName, contentType) {
+ const a = document.createElement("a");
+ const file = new Blob([content], { type: contentType });
+ a.href = URL.createObjectURL(file);
+ a.download = fileName;
+ a.click();
+}
+
+function onDownload(){
+ download(JSON.stringify(record), "json-file-name.json", "text/plain");
+ // record.clear();
+}
+
+
+</script>
+
+
+</head>
+<body style="background-color:lightblue;">
+
+ <button onclick="onDownload()">Download</button>
+<button onclick="play()">▶ play</button>
+<button onclick="stop()">STOP!!!!</button>
+<button id="accelPermsButton" onclick="getAccel()">Get Accelerometer Permissions</button>
+<div id="main">
+    
+
+
+    <div class="indicatorDot" style="left:30%; top:30%;"></div>
+</div>
+<div id="container"></div>
+</body>
+
+</html>
+
