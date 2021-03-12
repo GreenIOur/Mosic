@@ -258,7 +258,8 @@ function getAccel(){
                 // sample.detune.value = position.x * 1000;
                 // sources[0].playbackRate.value = 0.98 + position.gamma/300;
                 volumes[0].gain.value = Math.min(position.x/9, 1);
-                sources[1].playbackRate.value = 1 - Math.abs(position.beta/200);
+                volumes[1].gain.value = 1 - Math.min(position.x/9, 1);
+                sources[1].playbackRate.value = 1 - Math.abs(position.alpha/200);
                 // volumes[1].gain.value = 0.5;
                 // samplerain.playbackRate.value = 1 + position.gamma/300;
                 // samplesitar.playbackRate.value = 0.6 + position.gamma/800;
@@ -312,7 +313,7 @@ function onDownload(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.3
+vers 0.0.4
 </body>
 
 </html>
