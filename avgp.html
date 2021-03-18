@@ -233,7 +233,7 @@ function getAccel(){
                 position.beta = frontToBack_degrees;  
                 position.gamma = leftToRight_degrees;
 
-                position_sx = position_sx + position.x;
+                position_sx = position_sx + position.y;
 
                 record.push(position);
                 // Update velocity according to how tilted the phone is
@@ -322,7 +322,7 @@ function onDownload(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.11
+vers 0.0.12
 </body>
 
 </html>
