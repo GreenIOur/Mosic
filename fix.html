@@ -35,7 +35,7 @@
 <script>    
 
   const volume_master = [];
-
+ const volumeg = 100;
 function BufferLoader(context, urlList, callback) {
   this.context = context;
   this.urlList = urlList;
@@ -139,6 +139,17 @@ var volume_index = 0;
 // Gain node needs to be mutated by volume control.
 RhythmSample.gainNode = null;
 
+const volume = audioContext.createGain ? audioContext.createGain() : audioContext.createGainNode();
+      volume.gain.value = 1;
+      volume.connect(audioContext.destination);
+      volumes.push(volume);
+      const source = audioContext.createBufferSource();
+        source.buffer = buffer=;
+        source.loop = true;   
+        source.connect(volume);
+        source.start();
+        sources.push(source);
+
 RhythmSample.play = function() {
   function playSound(buffer, time) {
     if (!context.createGain)
@@ -154,6 +165,7 @@ RhythmSample.play = function() {
   // source.loop = true;
     if (!source.start)
       source.start = source.noteOn;
+    this.gainNode.gain.value = 
     source.start(time);
     this.source = source;
     volume_master.push(this.gainNode);
@@ -170,7 +182,7 @@ RhythmSample.play = function() {
   var eighthNoteTime = (60 / tempo) / 2;
 
   // Play 2 bars of the following:
-  for (var bar = 0; bar < 2; bar++) {
+  for (var bar = 0; bar < 4; bar++) {
     var time = startTime + bar * 8 * eighthNoteTime;
     // Play the bass (kick) drum on beats 1, 5
     playSound(kick, time);
@@ -192,7 +204,7 @@ RhythmSample.changeVolume = function(element) {
   var fraction = parseInt(element.value) / parseInt(element.max);
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  this.gainNode.gain.value = fraction * fraction;
+  volumeg = fraction * fraction;
 };
 init_sound();
 
@@ -335,7 +347,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.49
+vers 0.0.50
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
