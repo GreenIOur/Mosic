@@ -70,11 +70,9 @@ function finishedLoading(bufferList) {
 
   source1.connect(context.destination);
   source2.connect(context.destination);
-  source1.start(0);
-  source2.start(0);
+  source1.start();
+  source2.start();
 }
-
-init_sound();
 
 
 function getAccel(){
@@ -177,7 +175,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.1
+vers 0.0.2
 </body>
 
 </html>
