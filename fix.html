@@ -308,12 +308,12 @@ function getAccel(){
 var timin = 1;
 
 function myTimer() {
-  RhythmSample.changeVolume(py/100);
+  RhythmSample.changeVolume(1/timin);
   timin = timin + 1;
 } 
 
 
-var myVar = setInterval(myTimer, 200);
+var myVar = setInterval(myTimer, 100);
 
 </script>
 
@@ -332,7 +332,7 @@ var myVar = setInterval(myTimer, 200);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.39
+vers 0.0.40
 </body>
 
 </html>
