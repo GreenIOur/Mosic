@@ -121,7 +121,8 @@ function finishedLoading(bufferList) {
   source2.start();
 }
 function stop(){
-  const buffer = context.createBuffer(1, 1, audioContext.sampleRate);
+  context = new AudioContext();
+  const buffer = context.createBuffer(1, 1, 100000);
     var source = context.createBufferSource();
   source.buffer = buffer;
   source.connect(context.destination);
@@ -230,7 +231,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.7
+vers 0.0.8
 </body>
 
 </html>
