@@ -180,7 +180,7 @@ RhythmSample.play = function() {
 RhythmSample.changeVolume = function(value) {
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  this.gainNode.gain.value = value;
+  this.gainNode.gain.value = 1.0;
 };
 
 init_sound();
@@ -241,7 +241,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.23
+vers 0.0.24
 </body>
 
 </html>
