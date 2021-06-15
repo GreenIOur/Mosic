@@ -212,8 +212,11 @@ function getAccel(){
                 position.x = event.acceleration.x;
                 position.y = event.acceleration.y;
                 position.z = event.acceleration.z;
-                RhythmSample.changeVolume(1);
-
+                if(event.acceleration.x > 1){
+                  RhythmSample.changeVolume(1);
+                }
+                px = Math.max(0, Math.min(98, event.acceleration.x);
+                py = Math.max(0, Math.min(98, event.acceleration.y);
 
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
@@ -240,7 +243,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.18
+vers 0.0.19
 </body>
 
 </html>
