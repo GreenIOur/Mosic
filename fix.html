@@ -213,15 +213,16 @@ function getAccel(){
                 position.y = event.acceleration.y;
                 position.z = event.acceleration.z;
                 if(event.acceleration.x > 1){
-                  RhythmSample.changeVolume(1);
+                  // RhythmSample.changeVolume(1);
+                  RhythmSample.play();
                 }
-                px = Math.max(0, Math.min(98, event.acceleration.x);
-                py = Math.max(0, Math.min(98, event.acceleration.y);
+                // px = Math.max(0, Math.min(98, event.acceleration.x);
+                // py = Math.max(0, Math.min(98, event.acceleration.y);
 
-                dot = document.getElementsByClassName("indicatorDot")[0]
-                dot.setAttribute('style', "left:" + (px) + "%;" +
-                                              "top:" + (py) + "%;");
-                });
+                // dot = document.getElementsByClassName("indicatorDot")[0]
+                // dot.setAttribute('style', "left:" + (px) + "%;" +
+                //                               "top:" + (py) + "%;");
+                // });
     }
 });
 }
@@ -243,7 +244,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.19
+vers 0.0.20
 </body>
 
 </html>
