@@ -155,6 +155,7 @@ RhythmSample.play = function() {
     if (!source.start)
       source.start = source.noteOn;
     this.gainNode.gain.value = volumeg;
+    volumeg = volumeg / 2;
     source.start(time);
     this.source = source;
     volume_master.push(this.gainNode);
@@ -336,7 +337,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.53
+vers 0.0.54
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
