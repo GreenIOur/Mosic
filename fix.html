@@ -195,6 +195,16 @@ function stop(){
   
 }
 
+function handleMotionEvent(event) {
+
+    var x = event.accelerationIncludingGravity.x;
+    var y = event.accelerationIncludingGravity.y;
+    var z = event.accelerationIncludingGravity.z;
+
+    // Do something awesome.
+    RhythmSample.changeVolume(1/(Math.max(1.0, x)));
+}
+
 function getAccel(){
 
     DeviceMotionEvent.requestPermission().then(response => {
@@ -212,7 +222,7 @@ function getAccel(){
                 position.x = event.acceleration.x;
                 position.y = event.acceleration.y;
                 position.z = event.acceleration.z;
-                  RhythmSample.changeVolume(1/(Math.max(1, event.acceleration.x)));
+                  
                 // px = Math.max(0, Math.min(98, event.acceleration.x);
                 // py = Math.max(0, Math.min(98, event.acceleration.y);
 
@@ -222,6 +232,7 @@ function getAccel(){
                 });
     }
 });
+    window.addEventListener("devicemotion", handleMotionEvent, true);
 }
 
 </script>
@@ -241,7 +252,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.24
+vers 0.0.25
 </body>
 
 </html>
