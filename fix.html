@@ -180,10 +180,10 @@ RhythmSample.play = function() {
   }
 };
 
-RhythmSample.changeVolume = function(value) {
+RhythmSample.changeVolume = function(value_m) {
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  this.gainNode.gain.value = value;
+  this.gainNode.gain.value = value_m;
 };
 
 init_sound();
@@ -241,7 +241,8 @@ function handleMotionEvent(event) {
                 if(px < 10 && playin == true){
                   playin = false;
                 }
-                RhythmSample.changeVolume(py/100);
+                RhythmSample.changeVolume(py/1000);
+
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
@@ -315,7 +316,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.34
+vers 0.0.35
 </body>
 
 </html>
