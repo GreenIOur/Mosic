@@ -90,6 +90,7 @@ var position_sx = 0.0;
 
 var context;
 var bufferLoader;
+var bufferLists[10];
 
 function init_sound() {
   // Fix up prefixing
@@ -114,7 +115,8 @@ function finishedLoading(bufferList) {
   var source2 = context.createBufferSource();
   // source1.buffer = bufferList[0];
   source2.buffer = bufferList[1];
-
+  bufferLists[0] = bufferList[0];
+  bufferLists[1] = bufferList[1];
   // source1.connect(context.destination);
   source2.connect(context.destination);
   // source1.start();
@@ -134,8 +136,8 @@ RhythmSample.play = function() {
     source.start(time);
   }
 
-  var kick = bufferList[1];
-  var snare = bufferList[0];
+  var kick = bufferLists[1];
+  var snare = bufferLists[0];
   // var hihat = BUFFERS.hihat;
 
   // We'll start playing the rhythm 100 milliseconds from "now"
@@ -274,7 +276,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.10
+vers 0.0.11
 </body>
 
 </html>
