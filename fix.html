@@ -107,8 +107,8 @@ function init_sound() {
   bufferLoader = new BufferLoader(
     context,
     [
-      'kickhardcore.wav',
-      'rainstick2.wav',
+      'https://github.com/GreenIOur/Mosic/blob/main/kickhardcore.wav',
+      'https://github.com/GreenIOur/Mosic/blob/main/rainstick2.wav',
     ],
     finishedLoading
     );
@@ -321,9 +321,7 @@ function myTimer() {
   timin = timin + 1;
 } 
 
-
-var myVar = setInterval(myTimer, 100);
-
+window.setInterval(myTimer, 100);
 </script>
 
 
@@ -341,7 +339,7 @@ var myVar = setInterval(myTimer, 100);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.43
+vers 0.0.44
 </body>
 
 </html>
