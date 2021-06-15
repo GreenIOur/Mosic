@@ -91,6 +91,8 @@ var  record = [];
 var playing_snare = false;
 var updateRate = 1/60; // Sensor refresh rate
 
+var playit = false;
+
 var context;
 var bufferLoader;
 const bufferLists = [];
@@ -241,7 +243,10 @@ function handleMotionEvent(event) {
                 if(px < 10 && playin == true){
                   playin = false;
                 }
-                RhythmSample.changeVolume(py/1000);
+                if(playit == true){
+                  RhythmSample.changeVolume(py/1000);
+                }
+                
 
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
@@ -249,6 +254,7 @@ function handleMotionEvent(event) {
 }
 
 function getMotion(){
+  playit = true;
   // feature detect
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
       DeviceMotionEvent.requestPermission()
@@ -316,7 +322,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.35
+vers 0.0.36
 </body>
 
 </html>
