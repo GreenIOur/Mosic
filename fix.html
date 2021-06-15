@@ -123,30 +123,13 @@ function finishedLoading(bufferList) {
   source2.start();
 }
 
-// Gain node needs to be mutated by volume control.
-VolumeSample.gainNode = null;
 
-VolumeSample.play = function() {
-  if (!context.createGain)
-    context.createGain = context.createGainNode;
-  this.gainNode = context.createGain();
-  var source = context.createBufferSource();
-  source.buffer = BUFFERS.techno;
-
-  // Connect source to a gain node
-  source.connect(this.gainNode);
-  // Connect gain node to destination
-  this.gainNode.connect(context.destination);
-  // Start playback in a loop
-  source.loop = true;
-  if (!source.start)
-    source.start = source.noteOn;
-  source.start(0);
-  this.source = source;
-};
 
 var RhythmSample = {
 };
+
+// Gain node needs to be mutated by volume control.
+RhythmSample.gainNode = null;
 
 RhythmSample.play = function() {
   function playSound(buffer, time) {
@@ -230,6 +213,11 @@ function getAccel(){
                 position.y = event.acceleration.y;
                 position.z = event.acceleration.z;
                 RhythmSample.changeVolume(1);
+
+
+                dot = document.getElementsByClassName("indicatorDot")[0]
+                dot.setAttribute('style', "left:" + (px) + "%;" +
+                                              "top:" + (py) + "%;");
                 });
     }
 });
@@ -252,7 +240,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.17
+vers 0.0.18
 </body>
 
 </html>
