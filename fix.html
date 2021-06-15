@@ -143,7 +143,7 @@ RhythmSample.play = function() {
   // Connect gain node to destination
   this.gainNode.connect(context.destination);
   // Start playback in a loop
-  source.loop = true;
+  // source.loop = true;
     if (!source.start)
       source.start = source.noteOn;
     source.start(time);
@@ -244,7 +244,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.21
+vers 0.0.22
 </body>
 
 </html>
