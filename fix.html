@@ -192,7 +192,7 @@ RhythmSample.changeVolume = function(value_m) {
   // sound as good.
   if(volume_index>1){
     var soundlevel = volume_master[volume_index-1].gain.value;
-    volume_master[volume_index-1].gain.value = soundlevel / 2.0 ;
+    volume_master[volume_index-1].gain.value = soundlevel / 20.0 ;
   }
   
 };
@@ -341,7 +341,7 @@ var myVar = setInterval(myTimer, 100);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.42
+vers 0.0.43
 </body>
 
 </html>
