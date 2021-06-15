@@ -311,13 +311,13 @@ function getAccel(){
 });
 }
 
-var timin = 1;
+// var timin = 1;
 
-function myTimer() {
-  RhythmSample.changeVolume(1/timin);
-  timin = timin + 1;
-} 
-var myVar = setInterval(myTimer, 200);
+// function myTimer() {
+//   RhythmSample.changeVolume(1/timin);
+//   timin = timin + 1;
+// } 
+// var myVar = setInterval(myTimer, 200);
 </script>
 
 
@@ -335,7 +335,7 @@ var myVar = setInterval(myTimer, 200);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.47
+vers 0.0.48
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
