@@ -209,6 +209,7 @@ function getAccel(){
 
     DeviceMotionEvent.requestPermission().then(response => {
         if (response == 'granted') {
+          alert("Accelerometer activated");
        // Add a listener to get smartphone orientation 
            // in the alpha-beta-gamma axes (units in degrees)
           //  window.addEventListener('devicemotion', function(event) {
@@ -232,7 +233,6 @@ function getAccel(){
                 });
     }
 });
-    window.addEventListener("devicemotion", handleMotionEvent, true);
 }
 
 </script>
@@ -252,7 +252,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.25
+vers 0.0.26
 </body>
 
 </html>
