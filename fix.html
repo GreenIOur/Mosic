@@ -90,7 +90,7 @@ var position_sx = 0.0;
 
 var context;
 var bufferLoader;
-var bufferLists[10];
+let bufferLists;
 
 function init_sound() {
   // Fix up prefixing
@@ -115,8 +115,8 @@ function finishedLoading(bufferList) {
   var source2 = context.createBufferSource();
   // source1.buffer = bufferList[0];
   source2.buffer = bufferList[1];
-  bufferLists[0] = bufferList[0];
-  bufferLists[1] = bufferList[1];
+  bufferLists.push(bufferList[0]);
+  bufferLists.push(bufferList[1]);
   // source1.connect(context.destination);
   source2.connect(context.destination);
   // source1.start();
@@ -163,7 +163,7 @@ RhythmSample.play = function() {
   }
 };
 
-
+init_sound();
 
 function stop(){
   context = new AudioContext();
@@ -173,90 +173,6 @@ function stop(){
   source.connect(context.destination);
   source.start();
   
-}
-
-
-function getAccel(){
-
-    DeviceMotionEvent.requestPermission().then(response => {
-        if (response == 'granted') {
-       // Add a listener to get smartphone orientation 
-           // in the alpha-beta-gamma axes (units in degrees)
-          //  window.addEventListener('devicemotion', function(event) {
-          //   // position.x = event.acceleration.x;
-          //   // position.y = event.acceleration.y;
-          //   // position.z = event.acceleration.z;
-          // });
-            window.addEventListener('devicemotion',(event) => {
-                // Expose each orientation angle in a more readable way
-                var position = {};
-                position.x = event.acceleration.x;
-                position.y = event.acceleration.y;
-                position.z = event.acceleration.z;
-                rotation_degrees = event.rotationRate.alpha;
-                frontToBack_degrees = event.rotationRate.beta;
-                leftToRight_degrees = event.rotationRate.gamma;
-
-                position.alpha = rotation_degrees;
-                position.beta = frontToBack_degrees;  
-                position.gamma = leftToRight_degrees;
-
-                position_sx = position_sx + position.y;
-
-                record.push(position);
-                // Update velocity according to how tilted the phone is
-                // Since phones are narrower than they are long, double the increase to the x velocity
-                vx = vx + position.gamma * updateRate/20; 
-                vy = vy + position.beta * updateRate/20;
-                
-                // Update position and clip it to bounds
-                px = px + vx*.5;
-                if (px > 98 || px < 0){ 
-                    px = Math.max(0, Math.min(98, px)) // Clip px between 0-98
-                    vx = 0;
-                }
-
-                py = py + vy*.5;
-                if (py > 98 || py < 0){
-                    py = Math.max(0, Math.min(98, py)) // Clip py between 0-98
-                    vy = 0;
-                }
-                
-                dot = document.getElementsByClassName("indicatorDot")[0]
-                dot.setAttribute('style', "left:" + (px) + "%;" +
-                                              "top:" + (py) + "%;");
-                // sample.detune.value = window.innerWidth/((px)+(window.innerWidth/2));
-                // sample.detune.value = position.x * 1000;
-                // sources[0].playbackRate.value = 0.98 + position.gamma/300;
-                volumes[0].gain.value = Math.min(position.x/9, 1);
-                // volumes[1].gain.value = 1 - Math.min(position.x/9, 1);
-                sources[1].playbackRate.value = 1 - Math.abs(position.alpha/200);
-                // volumes[1].gain.value = 0.5;
-                // samplerain.playbackRate.value = 1 + position.gamma/300;
-                // samplesitar.playbackRate.value = 0.6 + position.gamma/800;
-    //             if(position.x > 7 && playing_snare == false){
-    //             	sample2 = audioContext.createBufferSource();
-    // 				sample2.buffer = audiobuffer2;
-    // // sample2.loop = true;
-    // 				sample2.connect(audioContext.destination);
-    //             	sample2.start();
-    //             	playing_snare = true;
-    //             	samplerain.playbackRate.value = 0;
-    //             }else{
-    //             	sample2.stop();
-    //             	playing_snare = false;
-    //             	samplerain.playbackRate.value = 0.5;
-    //             }
-
-                if(position_sx < 2){
-                  volumes[1].gain.value = 0;
-                }else{
-                  volumes[1].gain.value = 0.8;
-                }
-      
-            });
-        }
-    });
 }
 
 </script>
@@ -276,7 +192,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.11
+vers 0.0.13
 </body>
 
 </html>
