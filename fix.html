@@ -233,6 +233,7 @@ function handleMotionEvent(event) {
                     py = Math.max(0, Math.min(98, py)) // Clip py between 0-98
                     vy = 0;
                 }
+
                 if(px > 70 && playin == false){
                   RhythmSample.play();
                   playin = true;
@@ -240,7 +241,7 @@ function handleMotionEvent(event) {
                 if(px < 10 && playin == true){
                   playin = false;
                 }
-                // RhythmSample.changeVolume(1/vx);
+                RhythmSample.changeVolume(py/100);
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
@@ -314,7 +315,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.33
+vers 0.0.34
 </body>
 
 </html>
