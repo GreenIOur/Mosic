@@ -123,17 +123,48 @@ function finishedLoading(bufferList) {
   source2.start();
 }
 
+// Gain node needs to be mutated by volume control.
+VolumeSample.gainNode = null;
+
+VolumeSample.play = function() {
+  if (!context.createGain)
+    context.createGain = context.createGainNode;
+  this.gainNode = context.createGain();
+  var source = context.createBufferSource();
+  source.buffer = BUFFERS.techno;
+
+  // Connect source to a gain node
+  source.connect(this.gainNode);
+  // Connect gain node to destination
+  this.gainNode.connect(context.destination);
+  // Start playback in a loop
+  source.loop = true;
+  if (!source.start)
+    source.start = source.noteOn;
+  source.start(0);
+  this.source = source;
+};
+
 var RhythmSample = {
 };
 
 RhythmSample.play = function() {
   function playSound(buffer, time) {
+    if (!context.createGain)
+    context.createGain = context.createGainNode;
+  this.gainNode = context.createGain();
     var source = context.createBufferSource();
     source.buffer = buffer;
-    source.connect(context.destination);
+    // Connect source to a gain node
+  source.connect(this.gainNode);
+  // Connect gain node to destination
+  this.gainNode.connect(context.destination);
+  // Start playback in a loop
+  source.loop = true;
     if (!source.start)
       source.start = source.noteOn;
     source.start(time);
+    this.source = source;
   }
 
   var kick = bufferLists[1];
@@ -163,6 +194,12 @@ RhythmSample.play = function() {
   }
 };
 
+RhythmSample.changeVolume = function(value) {
+  // Let's use an x*x curve (x-squared) since simple linear (x) does not
+  // sound as good.
+  this.gainNode.gain.value = value;
+};
+
 init_sound();
 
 function stop(){
@@ -173,6 +210,29 @@ function stop(){
   source.connect(context.destination);
   source.start();
   
+}
+
+function getAccel(){
+
+    DeviceMotionEvent.requestPermission().then(response => {
+        if (response == 'granted') {
+       // Add a listener to get smartphone orientation 
+           // in the alpha-beta-gamma axes (units in degrees)
+          //  window.addEventListener('devicemotion', function(event) {
+          //   // position.x = event.acceleration.x;
+          //   // position.y = event.acceleration.y;
+          //   // position.z = event.acceleration.z;
+          // });
+            window.addEventListener('devicemotion',(event) => {
+                // Expose each orientation angle in a more readable way
+                var position = {};
+                position.x = event.acceleration.x;
+                position.y = event.acceleration.y;
+                position.z = event.acceleration.z;
+                RhythmSample.changeVolume(1/position.x);
+                });
+    }
+});
 }
 
 </script>
@@ -192,7 +252,7 @@ function stop(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.15
+vers 0.0.16
 </body>
 
 </html>
