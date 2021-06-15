@@ -126,7 +126,7 @@ function stop(){
     var source = context.createBufferSource();
   source.buffer = buffer;
   source.connect(context.destination);
-  source.start(time);
+  source.start();
   
 }
 
@@ -231,7 +231,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.8
+vers 0.0.9
 </body>
 
 </html>
