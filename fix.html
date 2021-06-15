@@ -187,16 +187,13 @@ RhythmSample.play = function() {
   }
 };
 
-RhythmSample.changeVolume = function(value_m) {
+RhythmSample.changeVolume = function(element) {
+  var volume = element.value;
+  var fraction = parseInt(element.value) / parseInt(element.max);
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  if(volume_index>1){
-    var soundlevel = volume_master[volume_index-1].gain.value;
-    volume_master[volume_index-1].gain.value = soundlevel / 20.0 ;
-  }
-  
+  volume_master[volume_index-1].gain.value = fraction * fraction;
 };
-
 init_sound();
 
 function stop(){
@@ -338,7 +335,8 @@ var myVar = setInterval(myTimer, 200);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.45
+vers 0.0.46
+<input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
 </html>
