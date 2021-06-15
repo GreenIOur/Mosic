@@ -34,6 +34,8 @@
 </style>
 <script>    
 
+  const volume_master = [];
+
 function BufferLoader(context, urlList, callback) {
   this.context = context;
   this.urlList = urlList;
@@ -132,6 +134,7 @@ function finishedLoading(bufferList) {
 
 var RhythmSample = {
 };
+var volume_index = 0;
 
 // Gain node needs to be mutated by volume control.
 RhythmSample.gainNode = null;
@@ -153,6 +156,8 @@ RhythmSample.play = function() {
       source.start = source.noteOn;
     source.start(time);
     this.source = source;
+    volume_master.push(this.gainNode);
+    volume_index = volume_index + 1;
   }
 
   var kick = bufferLists[1];
@@ -185,8 +190,11 @@ RhythmSample.play = function() {
 RhythmSample.changeVolume = function(value_m) {
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  var soundlevel = this.gainNode.gain.value;
-  this.gainNode.gain.value = soundlevel / 2.0 ;
+  if(volume_index>1){
+    var soundlevel = volume_master[volume_index-1].gain.value;
+    volume_master[volume_index-1].gain.value = soundlevel / 2.0 ;
+  }
+  
 };
 
 init_sound();
@@ -333,7 +341,7 @@ var myVar = setInterval(myTimer, 100);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.41
+vers 0.0.42
 </body>
 
 </html>
