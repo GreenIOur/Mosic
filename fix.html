@@ -205,6 +205,27 @@ function handleMotionEvent(event) {
     RhythmSample.changeVolume(1/(Math.max(1.0, x)));
 }
 
+function getMotion(){
+  // feature detect
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            alert("Accelerometer IOS");
+            window.addEventListener("devicemotion", handleMotionEvent, true);
+          }
+        })
+        .catch(console.error);
+    } else {
+      // handle regular non iOS 13+ devices
+      alert("Accelerometer no IOS");
+      window.addEventListener("devicemotion", handleMotionEvent, true);
+
+    }
+  }
+
+}
+
 function getAccel(){
 
     DeviceMotionEvent.requestPermission().then(response => {
@@ -246,7 +267,7 @@ function getAccel(){
  <button onclick="onDownload()">Download</button>
 <button onclick="RhythmSample.play()">▶ play</button>
 <button onclick="init_sound()">STOP!!!!</button>
-<button id="accelPermsButton" onclick="getAccel()">Get Accelerometer Permissions</button>
+<button id="accelPermsButton" onclick="getMotion()">Get Accelerometer Permissions</button>
 <div id="main">
     
 
@@ -254,7 +275,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.27
+vers 0.0.28
 </body>
 
 </html>
