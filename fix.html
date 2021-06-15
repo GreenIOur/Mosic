@@ -185,7 +185,8 @@ RhythmSample.play = function() {
 RhythmSample.changeVolume = function(value_m) {
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  this.gainNode.gain.value = value_m;
+  var soundlevel = this.gainNode.gain.value;
+  this.gainNode.gain.value = soundlevel / 2.0 ;
 };
 
 init_sound();
@@ -332,7 +333,7 @@ var myVar = setInterval(myTimer, 100);
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.40
+vers 0.0.41
 </body>
 
 </html>
