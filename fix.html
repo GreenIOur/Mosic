@@ -112,14 +112,57 @@ function finishedLoading(bufferList) {
   // Create two sources and play them both together.
   var source1 = context.createBufferSource();
   var source2 = context.createBufferSource();
-  source1.buffer = bufferList[0];
+  // source1.buffer = bufferList[0];
   source2.buffer = bufferList[1];
 
-  source1.connect(context.destination);
+  // source1.connect(context.destination);
   source2.connect(context.destination);
-  source1.start();
+  // source1.start();
   source2.start();
 }
+
+var RhythmSample = {
+};
+
+RhythmSample.play = function() {
+  function playSound(buffer, time) {
+    var source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+    if (!source.start)
+      source.start = source.noteOn;
+    source.start(time);
+  }
+
+  var kick = bufferList[1];
+  var snare = bufferList[0];
+  // var hihat = BUFFERS.hihat;
+
+  // We'll start playing the rhythm 100 milliseconds from "now"
+  var startTime = context.currentTime + 0.100;
+  var tempo = 80; // BPM (beats per minute)
+  var eighthNoteTime = (60 / tempo) / 2;
+
+  // Play 2 bars of the following:
+  for (var bar = 0; bar < 2; bar++) {
+    var time = startTime + bar * 8 * eighthNoteTime;
+    // Play the bass (kick) drum on beats 1, 5
+    playSound(kick, time);
+    playSound(kick, time + 4 * eighthNoteTime);
+
+    // Play the snare drum on beats 3, 7
+    playSound(snare, time + 2 * eighthNoteTime);
+    playSound(snare, time + 6 * eighthNoteTime);
+
+    // Play the hi-hat every eighthh note.
+    for (var i = 0; i < 8; ++i) {
+      // playSound(hihat, time + i * eighthNoteTime);
+    }
+  }
+};
+
+
+
 function stop(){
   context = new AudioContext();
   const buffer = context.createBuffer(1, 1, 100000);
@@ -221,8 +264,8 @@ function getAccel(){
 <body style="background-color:lightblue;">
 
  <button onclick="onDownload()">Download</button>
-<button onclick="init_sound()">▶ play</button>
-<button onclick="stop()">STOP!!!!</button>
+<button onclick="RhythmSample.play()">▶ play</button>
+<button onclick="init_sound()">STOP!!!!</button>
 <button id="accelPermsButton" onclick="getAccel()">Get Accelerometer Permissions</button>
 <div id="main">
     
@@ -231,7 +274,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.9
+vers 0.0.10
 </body>
 
 </html>
