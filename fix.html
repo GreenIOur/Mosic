@@ -192,7 +192,7 @@ RhythmSample.changeVolume = function(element) {
   var fraction = parseInt(element.value) / parseInt(element.max);
   // Let's use an x*x curve (x-squared) since simple linear (x) does not
   // sound as good.
-  volume_master[volume_index-1].gain.value = parseFloat(fraction * fraction);
+  this.gainNode.gain.value = fraction * fraction;
 };
 init_sound();
 
@@ -335,7 +335,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.48
+vers 0.0.49
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
