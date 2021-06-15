@@ -146,7 +146,7 @@ RhythmSample.play = function() {
   // Connect gain node to destination
   this.gainNode.connect(context.destination);
   // Start playback in a loop
-  source.loop = true;
+  // source.loop = true;
     if (!source.start)
       source.start = source.noteOn;
     source.start(time);
@@ -197,7 +197,7 @@ function stop(){
   source.start();
   
 }
-
+var playin = false;
 function handleMotionEvent(event) {
 
     // Expose each orientation angle in a more readable way
@@ -233,7 +233,14 @@ function handleMotionEvent(event) {
                     py = Math.max(0, Math.min(98, py)) // Clip py between 0-98
                     vy = 0;
                 }
-                RhythmSample.changeVolume(1/vx);
+                if(px > 70 && playin == false){
+                  RhythmSample.play();
+                  playin = true;
+                }
+                if(px < 10 && playin == true){
+                  playin = false;
+                }
+                // RhythmSample.changeVolume(1/vx);
                 dot = document.getElementsByClassName("indicatorDot")[0]
                 dot.setAttribute('style', "left:" + (px) + "%;" +
                                               "top:" + (py) + "%;");
@@ -307,7 +314,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.32
+vers 0.0.33
 </body>
 
 </html>
