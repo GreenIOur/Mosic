@@ -99,7 +99,7 @@ function play() {
 
   load(SAMPLO).then(buffers => {
   	for (var i = 0; i < SAMPLO.length; i++) {
-  		const volume = audioContext.createGain();
+  		const volume = audioContext.createGain ? audioContext.createGain() : audioContext.createGainNode();
   		volume.gain.value = 1;
   		volume.connect(audioContext.destination);
   		volumes.push(volume);
@@ -322,7 +322,7 @@ function onDownload(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.12
+vers 0.0.13
 </body>
 
 </html>
