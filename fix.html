@@ -92,15 +92,6 @@ var context;
 var bufferLoader;
 
 function init_sound() {
-
-  if (!faked) {
-    faked = true;
-    const buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
-    sample = audioContext.createBufferSource();
-    sample.buffer = buffer;
-    sample.connect(audioContext.destination);
-    sample.start();
-  }
   // Fix up prefixing
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
   context = new AudioContext();
@@ -128,6 +119,14 @@ function finishedLoading(bufferList) {
   source2.connect(context.destination);
   source1.start();
   source2.start();
+}
+function stop(){
+    const buffer = audioContext.createBuffer(1, 100, audioContext.sampleRate);
+    sample = audioContext.createBufferSource();
+    sample.buffer = buffer;
+    sample.connect(audioContext.destination);
+    sample.start();
+  
 }
 
 
@@ -231,7 +230,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.5
+vers 0.0.6
 </body>
 
 </html>
