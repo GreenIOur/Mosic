@@ -236,13 +236,13 @@ function handleMotionEvent(event) {
                     vy = 0;
                 }
 
-                if(px > 70 && playin == false){
-                  RhythmSample.play();
-                  playin = true;
-                }
-                if(px < 10 && playin == true){
-                  playin = false;
-                }
+                // if(px > 70 && playin == false){
+                //   RhythmSample.play();
+                //   playin = true;
+                // }
+                // if(px < 10 && playin == true){
+                //   playin = false;
+                // }
                 if(playit == true){
                   RhythmSample.changeVolume(py/1000);
                 }
@@ -322,7 +322,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.36
+vers 0.0.37
 </body>
 
 </html>
