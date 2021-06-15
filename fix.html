@@ -139,17 +139,6 @@ var volume_index = 0;
 // Gain node needs to be mutated by volume control.
 RhythmSample.gainNode = null;
 
-const volume = audioContext.createGain ? audioContext.createGain() : audioContext.createGainNode();
-      volume.gain.value = 1;
-      volume.connect(audioContext.destination);
-      volumes.push(volume);
-      const source = audioContext.createBufferSource();
-        source.buffer = buffer=;
-        source.loop = true;   
-        source.connect(volume);
-        source.start();
-        sources.push(source);
-
 RhythmSample.play = function() {
   function playSound(buffer, time) {
     if (!context.createGain)
@@ -347,7 +336,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.50
+vers 0.0.51
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
