@@ -140,8 +140,8 @@ var volume_index = 0;
 // Gain node needs to be mutated by volume control.
 RhythmSample.gainNode = null;
 
-var kick = bufferLists[0];
-var snare = bufferLists[1];
+var kick;
+var snare;
 
 RhythmSample.play = function() {
   function playSound(buffer, time) {
@@ -150,6 +150,8 @@ RhythmSample.play = function() {
   this.gainNode = context.createGain();
     var source = context.createBufferSource();
     source.buffer = buffer;
+
+
     // Connect source to a gain node
   source.connect(this.gainNode);
   // Connect gain node to destination
@@ -166,6 +168,8 @@ RhythmSample.play = function() {
     // volume_index = volume_index + 1;
   }
 
+  kick = bufferLists[0];
+  snare = bufferLists[1];
 
   // var hihat = BUFFERS.hihat;
 
@@ -340,7 +344,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.59
+vers 0.0.60
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
