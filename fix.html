@@ -244,11 +244,11 @@ function handleMotionEvent(event) {
                     vy = 0;
                 }
 
-                if(px > 70 && playin == false){
+                if(px > 50 && playin == false){
                   RhythmSample.play();
                   playin = true;
                 }
-                if(px < 10 && playin == true){
+                if(px < 30 && playin == true){
                   playin = false;
                 }
                 // if(playit == true){
@@ -337,7 +337,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.56
+vers 0.0.57
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
