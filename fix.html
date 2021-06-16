@@ -162,8 +162,8 @@ RhythmSample.play = function() {
     // volume_index = volume_index + 1;
   }
 
-  var kick = bufferLists[1];
-  var snare = bufferLists[0];
+  var kick = bufferLists[0];
+  var snare = bufferLists[1];
   // var hihat = BUFFERS.hihat;
 
   // We'll start playing the rhythm 100 milliseconds from "now"
@@ -337,7 +337,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.55
+vers 0.0.56
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
