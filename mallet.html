@@ -258,6 +258,13 @@ function handleMotionEvent(event) {
                 if(event.acceleration.x < -2 && playin == true){
                   playin = false;
                 }
+                if(event.acceleration.y > 4){
+                    kick = bufferLists[2];
+                }else if (event.acceleration.y > 0) {
+                    kick = bufferLists[1];
+                }else{
+                    kick = bufferLists[0];
+                }
                 // if(playit == true){
                 //   RhythmSample.changeVolume(py/1000);
                 // }
