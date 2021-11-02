@@ -144,10 +144,7 @@ var kick;
 var snare;
 
 RhythmSample.play = function() {
-  if(accel_perms != 1){
-    getMotion();
-    accel_perms = 1;
-  }
+
   
   function playSound(buffer, time) {
     if (!context.createGain)
@@ -346,7 +343,7 @@ function getAccel(){
 <body style="background-color:lightblue;">
 
  <button onclick="onDownload()">Download</button>
-<button onclick="RhythmSample.play()">▶ play</button>
+<button onclick="getMotion(); RhythmSample.play();">▶ play</button>
 <button onclick="init_sound()">STOP!!!!</button>
 <button id="accelPermsButton" onclick="getMotion()">Get Accelerometer Permissions</button>
 <div id="main">
@@ -356,7 +353,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.64
+vers 0.0.65
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
