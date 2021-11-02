@@ -144,6 +144,7 @@ var kick;
 var snare;
 
 RhythmSample.play = function() {
+  getMotion();
   function playSound(buffer, time) {
     if (!context.createGain)
     context.createGain = context.createGainNode;
@@ -351,7 +352,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.61
+vers 0.0.62
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
