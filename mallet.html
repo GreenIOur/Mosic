@@ -341,11 +341,10 @@ function getAccel(){
 
 </head>
 <body style="background-color:lightblue;">
+To play music,</br> just click on the play button and accept permissions.</br> Have fun to move around.</br>
 
- <button onclick="onDownload()">Download</button>
 <button onclick="getMotion(); RhythmSample.play();">▶ play</button>
-<button onclick="init_sound()">STOP!!!!</button>
-<button id="accelPermsButton" onclick="getMotion()">Get Accelerometer Permissions</button>
+
 <div id="main">
     
 
@@ -353,7 +352,7 @@ function getAccel(){
     <div class="indicatorDot" style="left:30%; top:30%;"></div>
 </div>
 <div id="container"></div>
-vers 0.0.65
+vers 0.0.66
 <input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
 </body>
 
