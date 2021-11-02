@@ -132,7 +132,7 @@ function finishedLoading(bufferList) {
 }
 
 
-var accelperms = 0;
+var accel_perms = 0;
 var RhythmSample = {
 };
 var volume_index = 0;
@@ -146,7 +146,7 @@ var snare;
 RhythmSample.play = function() {
   if(accel_perms != 1){
     getMotion();
-    accelperms = 1;
+    accel_perms = 1;
   }
   
   function playSound(buffer, time) {
