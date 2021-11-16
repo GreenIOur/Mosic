@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    
+  </head>
+  <body>
+    <!-- page content -->
+    <canvas id="my-inner" width="300" height="300" ></canvas>
+    <canvas id="my-inner2" width="300" height="300" ></canvas>
+    <canvas id="my-inner3" width="300" height="300" ></canvas>
+    <canvas id="my-inner4" width="300" height="300" ></canvas>
+  </body>
+  <script>
+const canvas = document.getElementById('my-inner');
+const canvasCtx = canvas.getContext('2d');
+const WIDTH = 300;
+const HEIGHT = 300;
+var audioCtx = new(window.AudioContext || window.webkitAudioContext());
+// create Oscillator node
+const oscillator = audioCtx.createOscillator();
+
+oscillator.type = 'sinus';
+oscillator.frequency.setValueAtTime(448, audioCtx.currentTime); // value in hertz
+oscillator.connect(audioCtx.destination);
+
+let osc = audioCtx.createOscillator();
+osc.type = 'sinus';
+osc.frequency.value = 672;
+
+let amp = audioCtx.createGain();
+amp.gain.value = 1;
+
+let lfo = audioCtx.createOscillator();
+lfo.type = 'sinus';
+lfo.frequency.value = 0.1;
+
+lfo.connect(amp.gain);
+osc.connect(amp).connect(audioCtx.destination);
+lfo.start();
+osc.start();
+
+
+
+
+
+var analyser = audioCtx.createAnalyser();
+source = lfo;
+source.connect(analyser);
+
+analyser.fftSize = 2048;
+var bufferLength = analyser.frequencyBinCount;
+var dataArray = new Uint8Array(bufferLength);
+canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+function draw() {
+  var drawVisual = requestAnimationFrame(draw);
+  analyser.getByteTimeDomainData(dataArray);
+  canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+  canvasCtx.lineWidth = 2;
+  canvasCtx.strokeStyle = 'rgb(100, 0, 0)';
+  canvasCtx.strokeStyle = 'hsl(180, 100%, 30%)';
+  canvasCtx.beginPath();
+  var sliceWidth = WIDTH * 20.0 / bufferLength;
+  var x = 0;
+  var max_value = 0;
+  for (var i = 0; i < bufferLength; i++) {
+
+    if (dataArray[i] > max_value) {
+      max_value = dataArray[i];
+    }
+
+    x += sliceWidth;
+  }
+
+  canvasCtx.arc(WIDTH / 2, HEIGHT / 2, Math.abs(Math.floor(((max_value / 255) * (HEIGHT-3) / 2))), 0, 2*Math.PI);
+  // canvasCtx.fillStyle = 'rgb(255,'+ Math.min(255,max_value) + ', '+Math.min(255,(max_value*173)/255)+')';
+    canvasCtx.fillStyle = 'hsl(180, 100%, '+((Math.min(255,max_value))*55/255)+'%)';
+  /* canvasCtx.lineTo(canvas.width, canvas.height / 2) ;*/
+  canvasCtx.stroke();
+}
+draw();
+
+</script>
+</html>
