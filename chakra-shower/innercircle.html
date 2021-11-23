@@ -1,23 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style type="text/css">
+
+      div.ex2 {
+  max-width: 300px;
+  margin: auto;
+  text-align: justify;
+  font-family: sans-serif;
+}
+
+h1{
+  text-align: justify;
+}
+p{
+  text-align: justify;
+  text-justify: inter-word;
+}
+    </style>
     <meta charset="utf-8">
     <title>title</title>
     
   </head>
   <body>
+       <div class="ex2"> <h1>BREATH</h1></br>
+  <p>
+  <span style="white-space: nowrap">The circle represents your lungs</span>
+  <span style="white-space: nowrap">Inhale when the circle is expanding</span>
+  <span style="white-space: nowrap">Exhale when the circle is reducing</span>
+  <span style="white-space: nowrap">Try to follow the rythm for 6 minutes</span>
+  <span style="white-space: nowrap">... </span>
+  <span style="white-space: nowrap">You should now be in trance</span>
+  <span style="white-space: nowrap">Your heart is synchronized with your breath</span>
+  The root chakra frequency is used to ground your energy
+</p>
+
+<canvas id="my-inner" width="300" height="300" ></canvas>
+</div>
+  
     <!-- page content -->
-    <canvas id="my-inner" width="300" height="300" ></canvas>
-    <canvas id="my-inner2" width="300" height="300" ></canvas>
-    <canvas id="my-inner3" width="300" height="300" ></canvas>
-    <canvas id="my-inner4" width="300" height="300" ></canvas>
+    
   </body>
   <script>
 const canvas = document.getElementById('my-inner');
 const canvasCtx = canvas.getContext('2d');
 const WIDTH = 300;
 const HEIGHT = 300;
-var audioCtx = new(window.AudioContext || window.webkitAudioContext());
+var audioCtx = new(window.AudioContext // Default
+    || window.webkitAudioContext // Safari and old versions of Chrome
+    || false); 
+// var audioCtx = new(window.AudioContext || window.webkitAudioContext());
 // create Oscillator node
 const oscillator = audioCtx.createOscillator();
 
