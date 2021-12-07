@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+<audio id="player" controls></audio>
+<div class="container">
+    <span>Microphone</span>
+    <div class="control-audio-wrapper">
+        <div id="audiomic" class="audio-control">&#127908;</div>
+    </div>
+</div>
+<!-- <script type="module" src="./index.js"></script> -->
+
+</body>
+   <script>
+
+ let audioContext
+let isFirtsClick = true
+let listeing = false
+
+function onMicrophoneDenied() {
+    console.log('denied')
+}
+
+async function onMicrophoneGranted(stream) {
+    if (isFirtsClick) {
+        audioContext = new AudioContext()
+        await audioContext.audioWorklet.addModule('vuem.js')
+        let microphone = audioContext.createMediaStreamSource(stream)
+
+        const node = new AudioWorkletNode(audioContext, 'vumeter')
+        node.port.onmessage  = event => {
+            let _volume = 0
+            let _sensibility = 5
+            if (event.data.volume)
+                _volume = event.data.volume;
+                console.log(event.data.volume);
+        }
+        microphone.connect(node).connect(audioContext.destination)
+        isFirtsClick = false
+    }
+
+    let audioButton = document.getElementsByClassName('audio-control')[0]
+    if (listeing) {
+        audioContext.suspend();
+          
+    } else {
+        audioContext.resume();
+             
+    }
+
+    listeing = !listeing
+}
+
+function activeSound () {
+    try {
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        
+        navigator.getUserMedia(
+            { audio: true, video: false },
+            onMicrophoneGranted,
+            onMicrophoneDenied
+        );
+    } catch(e) {
+        alert(e)
+    }
+}
+
+document.getElementById('audiomic').addEventListener('click', () => {
+    activeSound()
+})
+</script>
