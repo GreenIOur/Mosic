@@ -8,6 +8,7 @@
     <span>Microphone</span>
     <div class="control-audio-wrapper">
         <div id="audiomic" class="audio-control">&#127908;</div>
+        <div id="texto"></div>
     </div>
 </div>
 <!-- <script type="module" src="./index.js"></script> -->
@@ -36,6 +37,7 @@ async function onMicrophoneGranted(stream) {
             if (event.data.volume)
                 _volume = event.data.volume;
                 console.log(event.data.volume);
+                document.getElementById("texto").innerHTML = event.data.volume;
         }
         microphone.connect(node).connect(audioContext.destination)
         isFirtsClick = false
