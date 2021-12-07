@@ -20,6 +20,7 @@
 let isFirtsClick = true
 let listeing = false
 
+
 function onMicrophoneDenied() {
     console.log('denied')
 }
@@ -57,9 +58,7 @@ async function onMicrophoneGranted(stream) {
 
 function activeSound () {
     try {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-        
-        navigator.getUserMedia(
+        navigator.mediaDevices.getUserMedia(
             { audio: true, video: false },
             onMicrophoneGranted,
             onMicrophoneDenied
