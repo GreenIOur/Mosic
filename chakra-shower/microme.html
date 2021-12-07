@@ -27,6 +27,7 @@ function onMicrophoneDenied() {
 
 async function onMicrophoneGranted(stream) {
     if (isFirtsClick) {
+      console.log('granted')
         audioContext = new AudioContext()
         await audioContext.audioWorklet.addModule('vuem.js')
         let microphone = audioContext.createMediaStreamSource(stream)
@@ -58,11 +59,9 @@ async function onMicrophoneGranted(stream) {
 
 function activeSound () {
     try {
-        navigator.mediaDevices.getUserMedia(
-            { audio: true, video: false },
-            onMicrophoneGranted,
-            onMicrophoneDenied
-        );
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(onMicrophoneGranted)
+      .catch(onMicrophoneDenied);
     } catch(e) {
         alert(e)
     }
