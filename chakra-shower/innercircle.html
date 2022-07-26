@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- this should be set to your own payment pointer -->
+<meta name="monetization" content="$ilp.gatehub.net/742958133" />
+
+<style>
+  .hidden {
+    display: none;
+  }
+</style>
     <style type="text/css">
 
       div.ex2 {
@@ -19,8 +27,26 @@ p{
 }
     </style>
     <meta charset="utf-8">
-    <title>title</title>
-    
+    <title>Webmeditamoneytization</title>
+    <script>
+      let total = 0
+      let scale
+
+      if (document.monetization) {
+        document.monetization.addEventListener('monetizationprogress', ev => {
+          // initialize currency and scale on first progress event
+          if (total === 0) {
+            scale = ev.detail.assetScale
+            document.getElementById('currency').innerText = ev.detail.assetCode
+          }
+
+          total += Number(ev.detail.amount)
+
+          const formatted = (total * Math.pow(10, -scale)).toFixed(scale)
+          document.getElementById('total').innerText = formatted
+        })
+      }
+    </script>
   </head>
   <body>
        <div class="ex2"> <h1>BREATH</h1></br>
@@ -35,11 +61,20 @@ p{
   The root chakra frequency is used to ground your energy
 </p>
 
-<canvas id="my-inner" width="300" height="300" ></canvas>
+<canvas id="my-inner" width="300" height="300"></canvas>
+</br>
+  </br>
+<p>
+ Interleger tips you have made :
+  <span id="total">You dont have web monetization - download coil plugin</span>
+  <span id="currency"></span>
+</br>
+</p>
 </div>
-  
+
+
     <!-- page content -->
-    
+
   </body>
   <script>
 const canvas = document.getElementById('my-inner');
@@ -48,7 +83,7 @@ const WIDTH = 300;
 const HEIGHT = 300;
 var audioCtx = new(window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
-    || false); 
+    || false);
 // var audioCtx = new(window.AudioContext || window.webkitAudioContext());
 // create Oscillator node
 const oscillator = audioCtx.createOscillator();
