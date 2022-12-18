@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <title>My Map</title>
+    <!-- include the OpenLayers library -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v7.1.0/dist/ol.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.1.0/ol.css">
+
+    <!-- include your own JavaScript file containing the displayMap function -->
+    <script>
+    function displayMap() {
+      // create a new OpenLayers map object
+      var map = new ol.Map({
+        // set the target element for the map
+        target: 'map',
+        // add a view to the map
+        view: new ol.View({
+          // set the default center of the map
+          center: [0, 0],
+          // set the default zoom level
+          zoom: 2
+        })
+      });
+
+      // add an OpenStreetMap layer to the map
+      var osmLayer = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
+      map.addLayer(osmLayer);
+
+      // add a pin for the user's current GPS position
+      addCurrentPositionPin(map);
+    }
+
+    function showloc(){
+
+    }
+
+    function addCurrentPositionPin(map) {
+      // check if the browser supports geolocation
+      if (navigator.geolocation) {
+
+        // get the user's current position
+        navigator.geolocation.getCurrentPosition(function(position) {
+          // create a new OpenLayers feature for the user's position
+          console.log(position.coords.latitude);
+          console.log("ok log working");
+          var pos = new ol.Feature({
+            geometry: new ol.geom.Point(
+              ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude])
+            )
+          });
+
+          // create a new vector layer for the position feature
+          var vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+              features: [pos]
+            })
+          });
+
+          // add the vector layer to the map
+          map.addLayer(vectorLayer);
+
+          // set the center of the map to the user's position
+          map.getView().setCenter(pos.getGeometry().getCoordinates());
+          console.log(pos.getGeometry().getCoordinates());
+        });
+      } else {
+        // geolocation is not supported by the browser
+        console.log("Geolocation is not supported by this browser.");
+      }
+    }
+
+    async function displayPosition() {
+      // check if the browser supports geolocation
+      if (navigator.geolocation) {
+        console.log("clicked ");
+        // get the user's current position
+        navigator.geolocation.getCurrentPosition(await function(position) {
+          console.log("Latitude: " + position.coords.latitude);
+          console.log("Longitude: " + position.coords.longitude);
+        });
+      } else {
+        // geolocation is not supported by the browser
+        console.log("Geolocation is not supported by this browser.");
+      }
+    }
+
+
+</script>
+  </head>
+  <body onload="displayMap()">
+    <!-- the map will be displayed in this element -->
+    <div id="map"  onclick="displayPosition()"></div>
+  </body>
+</html>
