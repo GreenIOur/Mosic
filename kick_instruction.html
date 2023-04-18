@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"> 
+      </script> 
+    <title>Accelerometer Demo</title>
+
+    <style>
+    .indicatorDot{
+        width: 30px;
+        height: 30px;
+        background-color: #ffab56;
+        border-radius: 50%;
+        position:fixed;
+    }
+    </style>
+<style>
+    button {
+    color: white;
+    padding: 10px 20px;
+    font-size: large;
+    margin-bottom: 10px;
+    background: #96729E;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, .15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+  button:hover, [role="button"]:hover {
+    filter: brightness(1.2);
+    color: white;
+  }
+</style>
+<script>    
+
+  const volume_master = [];
+ let volumeg = 100;
+function BufferLoader(context, urlList, callback) {
+  this.context = context;
+  this.urlList = urlList;
+  this.onload = callback;
+  this.bufferList = new Array();
+  this.loadCount = 0;
+}
+
+BufferLoader.prototype.loadBuffer = function(url, index) {
+  // Load buffer asynchronously
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  var loader = this;
+
+  request.onload = function() {
+    // Asynchronously decode the audio file data in request.response
+    loader.context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        loader.bufferList[index] = buffer;
+        if (++loader.loadCount == loader.urlList.length)
+          loader.onload(loader.bufferList);
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  }
+
+  request.onerror = function() {
+    alert('BufferLoader: XHR error');
+  }
+
+  request.send();
+}
+
+BufferLoader.prototype.load = function() {
+  for (var i = 0; i < this.urlList.length; ++i)
+  this.loadBuffer(this.urlList[i], i);
+}
+
+  var obj = {gamma: 123, teta: "4"};
+var px = 50; // Position x and y
+var py = 50;
+var vx = 0.0; // Velocity x and y
+var vy = 0.0;
+var position_sx = 0.0;
+var  record = [];
+var playing_snare = false;
+var updateRate = 1/60; // Sensor refresh rate
+
+var playit = false;
+
+var context;
+var bufferLoader;
+const bufferLists = [];
+
+function init_sound() {
+  // Fix up prefixing
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  context = new AudioContext();
+
+  bufferLoader = new BufferLoader(
+    context,
+    [
+      'kickhardcore.wav',
+      'kickhardcore.wav',
+      'kickhardcore.wav',
+    ],
+    finishedLoading
+    );
+
+  bufferLoader.load();
+}
+
+function finishedLoading(bufferList) {
+  // Create two sources and play them both together.
+  var source1 = context.createBufferSource();
+  var source2 = context.createBufferSource();
+  // source1.buffer = bufferList[0];
+  source2.buffer = bufferList[1];
+  bufferLists.push(bufferList[0]);
+  bufferLists.push(bufferList[1]);
+  // source1.connect(context.destination);
+  source2.connect(context.destination);
+  // source1.start();
+  source2.start();
+}
+
+
+var accel_perms = 0;
+var RhythmSample = {
+};
+var volume_index = 0;
+
+// Gain node needs to be mutated by volume control.
+RhythmSample.gainNode = null;
+
+var kick;
+var snare;
+
+RhythmSample.play = function() {
+
+  
+  function playSound(buffer, time) {
+    if (!context.createGain)
+    context.createGain = context.createGainNode;
+  this.gainNode = context.createGain();
+    var source = context.createBufferSource();
+    source.buffer = buffer;
+
+
+    // Connect source to a gain node
+  source.connect(this.gainNode);
+  // Connect gain node to destination
+  this.gainNode.connect(context.destination);
+  // Start playback in a loop
+  // source.loop = true;
+    if (!source.start)
+      source.start = source.noteOn;
+    // this.gainNode.gain.value = volumeg;
+    // volumeg = volumeg / 2;
+    source.start(time);
+    this.source = source;
+    // volume_master.push(this.gainNode);
+    // volume_index = volume_index + 1;
+  }
+
+  kick = bufferLists[0];
+  snare = bufferLists[1];
+
+  // var hihat = BUFFERS.hihat;
+
+  // We'll start playing the rhythm 100 milliseconds from "now"
+  var startTime = context.currentTime;
+  var tempo = 80; // BPM (beats per minute)
+  var eighthNoteTime = (60 / tempo) / 2;
+
+  // Play 2 bars of the following:
+  for (var bar = 0; bar < 1; bar++) {
+    var time = startTime + bar * 8 * eighthNoteTime;
+    // Play the bass (kick) drum on beats 1, 5
+    playSound(kick, 0);
+    // playSound(kick, time + 4 * eighthNoteTime);
+
+    // Play the snare drum on beats 3, 7
+    // playSound(snare, time + 2 * eighthNoteTime);
+    // playSound(snare, time + 6 * eighthNoteTime);
+
+    // Play the hi-hat every eighthh note.
+    for (var i = 0; i < 8; ++i) {
+      // playSound(hihat, time + i * eighthNoteTime);
+    }
+  }
+};
+
+RhythmSample.changeVolume = function(element) {
+  var volume = element.value;
+  var fraction = parseInt(element.value) / parseInt(element.max);
+  // Let's use an x*x curve (x-squared) since simple linear (x) does not
+  // sound as good.
+  volumeg = fraction * fraction;
+};
+init_sound();
+
+function stop(){
+  context = new AudioContext();
+  const buffer = context.createBuffer(1, 1, 100000);
+    var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start();
+  
+}
+var playin = false;
+function handleMotionEvent(event) {
+
+    // Expose each orientation angle in a more readable way
+                var position = {};
+                position.x = event.acceleration.x;
+                position.y = event.acceleration.y;
+                position.z = event.acceleration.z;
+                rotation_degrees = event.rotationRate.alpha;
+                frontToBack_degrees = event.rotationRate.beta;
+                leftToRight_degrees = event.rotationRate.gamma;
+
+                position.alpha = rotation_degrees;
+                position.beta = frontToBack_degrees;  
+                position.gamma = leftToRight_degrees;
+
+                position_sx = position_sx + position.y;
+
+                // record.push(position);
+                // Update velocity according to how tilted the phone is
+                // Since phones are narrower than they are long, double the increase to the x velocity
+                vx = vx + position.gamma * updateRate/20; 
+                vy = vy + position.beta * updateRate/20;
+                
+                // Update position and clip it to bounds
+                px = px + vx*.5;
+                if (px > 98 || px < 0){ 
+                    px = Math.max(0, Math.min(98, px)) // Clip px between 0-98
+                    vx = 0;
+                }
+
+                py = py + vy*.5;
+                if (py > 98 || py < 0){
+                    py = Math.max(0, Math.min(98, py)) // Clip py between 0-98
+                    vy = 0;
+                }
+
+                if(event.acceleration.x > 4 && playin == false){
+                  RhythmSample.play();
+                  playin = true;
+                }
+                if(event.acceleration.x < -2 && playin == true){
+                  playin = false;
+                }
+                if(event.acceleration.y > 4){
+                    kick = bufferLists[2];
+                }else if (event.acceleration.y > 0) {
+                    kick = bufferLists[1];
+                }else{
+                    kick = bufferLists[0];
+                }
+                // if(playit == true){
+                //   RhythmSample.changeVolume(py/1000);
+                // }
+                
+
+                dot = document.getElementsByClassName("indicatorDot")[0]
+                dot.setAttribute('style', "left:" + (px) + "%;" +
+                                              "top:" + (py) + "%;");
+}
+
+function getMotion(){
+  playit = true;
+  // feature detect
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            alert("Accelerometer IOS");
+            window.addEventListener("devicemotion", handleMotionEvent, true);
+          }
+        })
+        .catch(console.error);
+    } else {
+      // handle regular non iOS 13+ devices
+      alert("Accelerometer no IOS");
+      window.addEventListener("devicemotion", handleMotionEvent, true);
+
+    }
+  }
+
+function getAccel(){
+
+    DeviceMotionEvent.requestPermission().then(response => {
+        if (response == 'granted') {
+          alert("Accelerometer activated");
+       // Add a listener to get smartphone orientation 
+           // in the alpha-beta-gamma axes (units in degrees)
+          //  window.addEventListener('devicemotion', function(event) {
+          //   // position.x = event.acceleration.x;
+          //   // position.y = event.acceleration.y;
+          //   // position.z = event.acceleration.z;
+          // });
+            window.addEventListener('devicemotion',(event) => {
+                // Expose each orientation angle in a more readable way
+                var position = {};
+                position.x = event.acceleration.x;
+                position.y = event.acceleration.y;
+                position.z = event.acceleration.z;
+                  
+                // px = Math.max(0, Math.min(98, event.acceleration.x);
+                // py = Math.max(0, Math.min(98, event.acceleration.y);
+
+                // dot = document.getElementsByClassName("indicatorDot")[0]
+                // dot.setAttribute('style', "left:" + (px) + "%;" +
+                //                               "top:" + (py) + "%;");
+                });
+    } else {
+      alert("Accelerometer not activated");
+    }
+});
+}
+
+// var timin = 1;
+
+// function myTimer() {
+//   RhythmSample.changeVolume(1/timin);
+//   timin = timin + 1;
+// } 
+// var myVar = setInterval(myTimer, 200);
+</script>
+
+
+</head>
+<body style="background-color:lightblue;">
+<h1>
+To play music,</br> just click on the play button and accept permissions.</br> Have fun to move around.</br>
+</h1>
+ Do not put your Iphone in "do not disturb" mode (side witch)</br>
+ Accept permissions for accelerometer</br>
+ If sound does not work when the phone is shaken, click play again.</br>
+ </br>
+<button onclick="getMotion(); RhythmSample.play();">▶ play</button>
+
+<div id="main">
+    
+
+
+    <div class="indicatorDot" style="left:30%; top:30%;"></div>
+</div>
+<div id="container"></div>
+vers 0.0.67
+<input type="range" min="0" max="100" value="100" oninput="RhythmSample.changeVolume(this);">
+</body>
+
+</html>
+
